@@ -2,7 +2,7 @@
 
 Program for controlling your PC mouse using Arduino Leonardo with joystick connected to analog inputs and three buttons connected to digital inputs.
 
-Is has beed tested on **Arduino Leonardo** board. For it's major functionality it is possible to use some other Arduino boards like Arduino Micro or Arduino Esplora, but be adviced that pin configuration and some parts of code (like included header files for Esplora) can be different for these boards.
+It has been tested on **Arduino Leonardo** board. For it's major functionality it is possible to use some other Arduino boards like Arduino Micro or Arduino Esplora, but be adviced that pin configuration and some parts of code (like included header files for Esplora) can be different for these boards.
 
 # Usage
 

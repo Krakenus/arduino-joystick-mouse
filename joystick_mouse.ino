@@ -8,6 +8,9 @@
 #define MOUSE_X_AXIS_INPT A0
 #define MOUSE_Y_AXIS_INPT A1
 
+#define MOUSE_SENSITIVITY 10
+#define JOYSTICK_DEADZONE 1
+
 #define LOOP_DELAY 5
 
 // Operation modes for readMouseButton function
@@ -32,15 +35,22 @@ void handleMouse() {
   int yReading = analogRead(MOUSE_Y_AXIS_INPT);
 
   // map the reading from the analog input range to the output range:
-  int mouseX = map(xReading, 0, 1024, -10, 10);
-  int mouseY = map(yReading, 0, 1024, 10, -10);
+  int mouseX = map(xReading, 0, 1024, -MOUSE_SENSITIVITY, MOUSE_SENSITIVITY);
+  int mouseY = map(yReading, 0, 1024, MOUSE_SENSITIVITY, -MOUSE_SENSITIVITY);
 
-  if (mouseX > 1 || mouseX < -1 || mouseY < -1 || mouseY > 1)
+  // if joystick moved out of the deadzone, move the mouse
+  if (mouseX > JOYSTICK_DEADZONE || mouseX < -JOYSTICK_DEADZONE || mouseY < -JOYSTICK_DEADZONE || mouseY > JOYSTICK_DEADZONE)
   {
     Mouse.move(mouseX, mouseY, 0);
   }
 }
 
+/**
+ * Has folloving operation modes:
+ * 1. INPUT_LOW_MODE - returns true when btn state changes from HIGH to LOW
+ * 2. INPUT_HIGH_MODE - returns true when btn state changes from LOW to HIGH
+ * 3. INPUT_CHANGED_MODE - return true when btn state changes from HIGH to LOW or from LOW to HIGH
+ */
 bool readMouseButton(int button, bool &lastState, unsigned char mode = INPUT_LOW_MODE) {
   bool ret = false;
   bool state = digitalRead(button);
@@ -54,6 +64,7 @@ bool readMouseButton(int button, bool &lastState, unsigned char mode = INPUT_LOW
 }
 
 void loop() {
+  // check if mouse in ON/OFF
   if (readMouseButton(MOUSE_SWITCH, lastSwitchState)) {
     if (mouseActive) {
       Mouse.end();
@@ -68,6 +79,7 @@ void loop() {
   if (mouseActive) {
     handleMouse();
 
+    // check left mouse btn
     if (readMouseButton(MOUSE_LEFT_BTN, lastMouseLeftState, INPUT_CHANGED_MODE)) {
       if (lastMouseLeftState == LOW && !Mouse.isPressed()) {
         Mouse.press();
@@ -75,10 +87,12 @@ void loop() {
         Mouse.release();
     }
 
+    // check right mouse btn
     if (readMouseButton(MOUSE_RIGHT_BTN, lastMouseRightState, INPUT_HIGH_MODE)) {
       Mouse.press(MOUSE_RIGHT);
       Mouse.release(MOUSE_RIGHT);
     }
   }
+  
   delay(LOOP_DELAY);
 }

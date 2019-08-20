@@ -6,11 +6,13 @@ It has been tested on **Arduino Leonardo** board. For it's major functionality i
 
 # Usage
 
-1. Upload the sketch using Arduino IDE via USB or by any other method that suits you.
+1. Check `#define` statements that map the mouse buttons to arduino pins at the beggining of `joystick_mouse.ino` and make sure that they match to your circuit connection. You also may want to change MOUSE_SENSITIVITY and JOYSTICK_DEADZONE.
 
-2. Connect your Arduino board using its micro USB port with your PC.
+2. Upload the sketch using Arduino IDE via USB or by any other method that suits you.
 
-3. See below for buttons and joystick description.
+3. Connect your Arduino board using its micro USB port with your PC.
+
+4. See below for buttons and joystick description.
 
 ## Circuit
 
@@ -34,7 +36,7 @@ When the program starts the mouse is switched OFF by default.
 
 When the mouse input is OFF, no actions from joystick or other buttons are handled.
 
-It is recommended to switch the mouse input OFF before any attempt to write new FW to you board as the mouse communication can block uploading of new FW. For more information see this guide: 
+**It is recommended to switch the mouse input OFF before any attempt to write new FW to you board** as the mouse communication can block uploading of new FW. For more information see this guide: 
 
 https://www.arduino.cc/en/Guide/ArduinoLeonardoMicro#toc12
 
